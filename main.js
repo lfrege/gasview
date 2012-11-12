@@ -2,4 +2,12 @@ var http = require('http');
 var mserve = require('frontEnd');
 const MAIN_PORT = 8080;
 
-http.createServer(mserve.start).listen(MAIN_PORT);
+readData = function(req, res)
+{
+	req.body = "";
+
+	req.on('data', function(data) { req.body += data; } );
+	req.on('end', function() { mserve.start(req, res); } );
+}
+
+http.createServer(readData).listen(MAIN_PORT);
